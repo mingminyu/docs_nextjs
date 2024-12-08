@@ -1,0 +1,4923 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Next.js 中文文档">
+      
+      
+        <meta name="author" content="Mingmin Yu">
+      
+      
+        <link rel="canonical" href="https://mingminyu.github.io/app/building-your-application/caching/">
+      
+      
+        <link rel="prev" href="../rendering/runtimes/">
+      
+      
+        <link rel="next" href="../styling/">
+      
+      
+      <link rel="icon" href="../../../custom/assets/nextjs.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.47">
+    
+    
+      
+        <title>缓存 - Next.js 中文文档</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="Next.js 中文文档" class="md-header__button md-logo" aria-label="Next.js 中文文档" data-md-component="logo">
+      
+  <img src="../../../custom/assets/nextjs.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Next.js 中文文档
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              缓存
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="indigo"  aria-label="暗黑模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="暗黑模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="明亮模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="明亮模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../.." class="md-tabs__link">
+          
+  
+    
+  
+  快速入门
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+    
+  
+  App Router
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../page/index.md" class="md-tabs__link">
+          
+  
+    
+  
+  Page Router
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/index.md" class="md-tabs__link">
+          
+  
+    
+  
+  架构
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Next.js 中文文档" class="md-nav__button md-logo" aria-label="Next.js 中文文档" data-md-component="logo">
+      
+  <img src="../../../custom/assets/nextjs.svg" alt="logo">
+
+    </a>
+    Next.js 中文文档
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../.." class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    快速入门
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            快速入门
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    安装
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/project-structure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    项目结构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    App Router
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            App Router
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    构建你的应用
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            构建你的应用
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../routing/" class="md-nav__link ">
+              
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8m1-7v3h2l-3 3-3-3h2v-3m-6 0h3v2l3-3-3-3v2H5m6 0V8H9l3-3 3 3h-2v3m6 0h-3V9l-3 3 3 3v-2h3"/></svg>
+  
+  <span class="md-ellipsis">
+    路由
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2_2" id="__nav_2_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            路由
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routing/defining-routes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    路由定义
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routing/pages/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    页面
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routing/pages-and-layouts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    页面和布局
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routing/linking-and-navigating/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    链接和导航
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routing/error-handling.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    错误处理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routing/loading-ui-and-streaming/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    加载UI和流式传输
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routing/redirecting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    重定向
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routing/route-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    路由组
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routing/project-organization-and-file-colocation.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    项目组织与文件托管
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routing/dynamic-routes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    动态路由
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routing/parallel-routes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    并行路由
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routing/intercepting-routes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    拦截路由
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routing/route-handlers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    路由处理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routing/middleware/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    中间件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routing/internationalization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    国际化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../data-fetching/" class="md-nav__link ">
+              
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.14 16.7c-.91 1.51-2.06 1.03-3.14.39s-2.1-1.41-2.75-.5c-.71.78-.16 2.03.12 3.13.28 1.11.3 2.07-1.47 2.28-1.4-.19-1.32-1.35-1.09-2.58s.59-2.53-.31-2.99c-.72-.48-1.22.35-1.85 1.17-.65.81-1.39 1.6-2.61 1.02-1.1-.91-.68-1.44-.1-2.12s1.33-1.59.9-3.19c-.18-.65-1.08-.5-1.97-.52-.87-.02-1.75-.2-1.84-1.5-.07-.79.52-1.11 1.13-1.36.62-.25 1.25-.43 1.26-1.06.03-.61-.38-1.04-.64-1.49s-.37-.92.25-1.62c1.05-.86 1.89-.13 2.73.66s1.67 1.62 2.7.97c.82-.54.07-1.49-.51-2.42s-.99-1.82.51-2.23c1.3-.36 1.8.53 2.25 1.56.46 1.03.86 2.2 1.96 2.41 1.57.29 2.71-1.55 3.8-3.01s2.16-2.55 3.53-.75c1.5 1.89.07 2.77-1.6 3.55-1.67.73-3.59 1.37-3.13 2.78.27.82 1.15.37 2.08.06.92-.31 1.91-.48 2.39.93.51 1.49-.7 1.83-2.06 1.97s-2.88.08-2.98.76c-.11.71.8 1 1.59 1.42.79.43 1.46 1 .85 2.28M20.5 19c-.95 0-1.44-.74-1.44-1.5s.48-1.5 1.44-1.5c1 0 1.5.74 1.5 1.5s-.5 1.5-1.5 1.5"/></svg>
+  
+  <span class="md-ellipsis">
+    数据获取
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2_3" id="__nav_2_2_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            数据获取
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-fetching/fetching-and-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    数据获取与缓存
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-fetching/server-actions-and-mutations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    服务器操作和突变
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-fetching/incremental-static-regeneration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    增量静态再生
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../rendering/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    渲染
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2_4" id="__nav_2_2_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            渲染
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rendering/server-components/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    服务端组件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rendering/client-components/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    客户端组件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rendering/server-and-client-composition-patterns.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    组合模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rendering/partial-prerendering/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    部分预渲染
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rendering/runtimes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    运行时
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    缓存
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    缓存
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 概述
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 请求记忆
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 请求记忆">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 周期
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 重新验证
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 选择退出
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 数据缓存
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 数据缓存">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 周期
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 重新验证
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 重新验证">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 基于时间的重新验证
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 按需重新验证
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 选择退出
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 全路由缓存
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 全路由缓存">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-react" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 服务端的 React 渲染
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-nextjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 服务端的 Next.js 缓存（全路由缓存）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-react" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 客户端的 React 注水和协调
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-nextjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4 客户端的 Next.js 缓存（路由缓存）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.5 后续导航
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.6 静态和动态渲染
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.7 期间
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#48" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.8 失效
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#49" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.9 选择退出
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 客户端路由缓存
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 客户端路由缓存">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 期间
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 失效
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 选择退出
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 缓存交互
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 缓存交互">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 数据缓存和全路由缓存
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 数据缓存和客户端路由器缓存
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. API
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-link" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.1 &lt;Link&gt;
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-routerprefetch" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.2 router.prefetch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-routerrefresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.3 router.refresh
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-fetch" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.4 fetch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75-fetchcache" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.5 fetch的cache 参数
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#76-fetch-nextreavalidate" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.6 fetch 的 next.reavalidate 参数
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#77-fetch-nexttags-revalidatetag" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.7 fetch 的 next.tags 参数以及 revalidateTag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#78-revalidatepath" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.8 revalidatePath
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#79-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.9 动态API
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.9 动态API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#791-cookies" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.9.1 cookies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#710" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.10 路由段配选项
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#711-generatestaticparams" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.11 generateStaticParams
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#712-react-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.12 React cache 函数
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_6" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../styling/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    样式
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2_6" id="__nav_2_2_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            样式
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../styling/css/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../styling/tailwind-css/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tailwind CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../styling/sass/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sass
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stylingcss-in-js.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JS 中的 CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_7" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../optimizing/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    优化
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2_7" id="__nav_2_2_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizing/images/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    图像优化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizing/videos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    视频优化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizing/fonts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    字体优化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizing/metadata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    元数据
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizing/scripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    脚本优化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizing/package-bundling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    打包优化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizing/lazy-loading/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    惰性加载
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizing/analytics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    分析
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizing/instrumentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    仪表
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizing/open-telemetry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    遥测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizing/static-assets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    静态资源
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizing/third-party-libraries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第三方库
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizing/memory-usage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    内存使用
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_8" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../configuring/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    配置
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2_8" id="__nav_2_2_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            配置
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuring/typescript/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TypeScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuring/eslint/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ESLint
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuring/environment-variables/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    环境变量
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuring/absolute-imports-and-module-aliases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    绝对导入和模块路径别名
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuring/mdx/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MDX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuring/src-directory/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    src目录
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuring/custom-server/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    自定义服务器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuring/draft-mode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    草稿模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuring/content-security-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    内容安全策略
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuring/debugging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    调试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuring/progressive-web-apps/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    渐进式WEB应用
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_9" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../testing/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    测试
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2_9" id="__nav_2_2_9_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            测试
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/vitest/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vitest
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/jest/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jest
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/playwright/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Playwright
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/cypress/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cypress
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    授权
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_11" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../deploying/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    部署
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2_11" id="__nav_2_2_11_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            部署
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deploying/production-checklist/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    生产清单
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deploying/static-export/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    静态导出
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deploying/multi-zones/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    多区域
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../upgrading.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    升级
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    案例
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API 参考
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            API 参考
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_1" id="__nav_2_3_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    组件
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            组件
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/components/index.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    None
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/components/font.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    字体
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/components/form.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    表单
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/components/image.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    图像
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/components/link.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    链接
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/components/script.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    脚本
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_2" id="__nav_2_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    文件约定
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            文件约定
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/file-conventions/index.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    None
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_3" id="__nav_2_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    函数
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            函数
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/functions/index.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    None
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_4" id="__nav_2_3_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    NextJS配置选项
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            NextJS配置选项
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/next-config-js/index.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    None
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_5" id="__nav_2_3_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    命令行工具
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            命令行工具
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/cli/index.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    None
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/cli/next-create-app.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    next-create-app
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/cli/next.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Next CLI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/edge-runtime.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Edge Runtime
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Page Router
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Page Router
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../page/index.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    None
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    架构
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            架构
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/index.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    None
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/accessibility.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    可访问性
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/fast-refresh.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    快速刷新
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/nextjs-compiler.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    编译器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/supported-browsers.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    支持浏览器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/turbopack.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Turbopack
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 概述
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 请求记忆
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 请求记忆">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 周期
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 重新验证
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 选择退出
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 数据缓存
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 数据缓存">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 周期
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 重新验证
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 重新验证">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 基于时间的重新验证
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 按需重新验证
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 选择退出
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 全路由缓存
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 全路由缓存">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-react" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 服务端的 React 渲染
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-nextjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 服务端的 Next.js 缓存（全路由缓存）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-react" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 客户端的 React 注水和协调
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-nextjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4 客户端的 Next.js 缓存（路由缓存）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.5 后续导航
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.6 静态和动态渲染
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.7 期间
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#48" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.8 失效
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#49" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.9 选择退出
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 客户端路由缓存
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 客户端路由缓存">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 期间
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 失效
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 选择退出
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 缓存交互
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 缓存交互">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 数据缓存和全路由缓存
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 数据缓存和客户端路由器缓存
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. API
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-link" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.1 &lt;Link&gt;
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-routerprefetch" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.2 router.prefetch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-routerrefresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.3 router.refresh
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-fetch" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.4 fetch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75-fetchcache" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.5 fetch的cache 参数
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#76-fetch-nextreavalidate" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.6 fetch 的 next.reavalidate 参数
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#77-fetch-nexttags-revalidatetag" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.7 fetch 的 next.tags 参数以及 revalidateTag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#78-revalidatepath" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.8 revalidatePath
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#79-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.9 动态API
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.9 动态API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#791-cookies" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.9.1 cookies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#710" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.10 路由段配选项
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#711-generatestaticparams" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.11 generateStaticParams
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#712-react-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.12 React cache 函数
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="_1">缓存<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>Next.js 通过缓存渲染工作和数据请求来提高应用程序的性能并降低成本。本页面深入介绍了 Next.js 缓存机制、可用于配置它们的 API 以及它们如何相互交互。</p>
+<div class="admonition note">
+<p class="admonition-title">补充</p>
+<p>值得一提的是，此页面可帮助我们了解 Next.js 底层的工作原理，但并不是高效使用 Next.js 的必要知识。大多数 Next.js 的缓存触发是由我们使用 API 方法决定，并且具有默认值，可通过最少的配置获得最佳性能。</p>
+</div>
+<h2 id="1">1. 概述<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p>以下是不同缓存机制及其用途的高级概述：</p>
+<table>
+<thead>
+<tr>
+<th>机制</th>
+<th>功能</th>
+<th>作用端</th>
+<th>目的</th>
+<th>生命周期</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>请求缓存</td>
+<td>返回函数值</td>
+<td>服务端</td>
+<td>复用 React 组件树中的数据</td>
+<td>每个请求的生命周期</td>
+</tr>
+<tr>
+<td>数据缓存</td>
+<td>数据</td>
+<td>服务端</td>
+<td>跨用户请求和部署的缓存数据</td>
+<td>持久（可以重新验证）</td>
+</tr>
+<tr>
+<td>全路由缓存</td>
+<td>HTML 和 RSC 有效负载</td>
+<td>服务端</td>
+<td>降低渲染成本并提高性能</td>
+<td>持久（可以重新验证）</td>
+</tr>
+<tr>
+<td>路由缓存</td>
+<td>RSC 有效负载</td>
+<td>客户端</td>
+<td>减少导航时的服务端请求</td>
+<td>用户会话或基于时间</td>
+</tr>
+</tbody>
+</table>
+<p>默认情况下，Next.js 会尽可能多地缓存以提高性能并降低成本，这意味着除非我们选择退出，否则路由将被静态呈现并且数据请求将被缓存。下图显示了默认的缓存行为：在构建时静态渲染路由时以及首次访问静态路由时。</p>
+<p><img alt="img.png" src="../../../images/caching_overview.png" /></p>
+<p>缓存行为会具体取决于路线是静态还是动态呈现、数据是缓存还是未缓存，以及请求是初始访问还是后续导航的一部分而发生变化。根据您的使用案例，我们可以为各个路由和数据请求配置缓存行为。</p>
+<h2 id="2">2. 请求记忆<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p>React 扩展了 <code>fetch</code> API 以自动记住具有相同 URL 和选项的请求，这意味着我们可以在 React 组件树中的多个位置调用相同数据的获取函数，而只需执行一次。</p>
+<p><img alt="" src="../../../images/deduplicated-fetch-requests.avif" /></p>
+<p>例如，如果我们需要跨路由（例如在布局、页面和多个组件中）使用相同的数据，则不必在树的顶部获取数据，并在组件之间转发 props。相反，我们可以在需要的组件中获取数据，而不必担心通过网络对同一数据发出多个请求对性能的影响。</p>
+<div class="language-jsx highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">app/example.tsx</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">getItem</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">  </span><span class="c1">// The `fetch` function is automatically memoized and the result is cached</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;https://.../item/1&#39;</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="p">}</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="c1">// This function is called twice, but only executed the first time</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="kd">const</span><span class="w"> </span><span class="nx">item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">getItem</span><span class="p">()</span><span class="w"> </span><span class="c1">// cache MISS</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="c1">// The second call could be anywhere in your route</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="kd">const</span><span class="w"> </span><span class="nx">item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">getItem</span><span class="p">()</span><span class="w"> </span><span class="c1">// cache HIT</span>
+</span></code></pre></div></td></tr></table></div>
+<details class="info" open="open">
+<summary>请求记忆的工作机制</summary>
+<p><img alt="" src="../../../images/request-memoization.avif" /></p>
+<ul>
+<li>在渲染路由时，第一次调用特定请求时，其结果不会在内存中，而是缓存 <code>MISS</code>。</li>
+<li>因此该函数将被执行，并且将从外部源获取数据，并将结果存储在内存中。</li>
+<li>同一渲染通道中请求的后续函数调用将是缓存命中，数据将从内存中返回，而不执行该函数。</li>
+<li>一旦路由被渲染并且渲染过程完成，内存就会被“重置”，并且所有请求记录都会被清除。</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">补充</p>
+<ul>
+<li>请求记忆是一项 React 功能，而不是 Next.js 功能。包含在这里是为了展示它如何与其他缓存机制交互。</li>
+<li>请求记忆仅适用于获取请求中的 <code>GET</code> 方法。</li>
+<li>请求记忆只作用域 React 组件树中，这意味着：</li>
+<li>它适用于 <code>generateMetadata</code>、<code>generateStaticParams</code>、布局、页面和其他服务器组件中的 <code>fetch</code> 请求。</li>
+<li>它不适用于路由处理程序中的 <code>fetch</code> 请求，因为它们不是 React 组件树的一部分。</li>
+<li>对于不适合 <code>fetch</code> 的情况（例如某些数据库客户端、CMS 客户端或 GraphQL 客户端），我们可以使用 React 缓存功能来记忆函数。</li>
+</ul>
+</div>
+</details>
+<h3 id="21">2.1 周期<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
+<p>缓存会持续到服务器请求的生命周期，直到 React 组件树完成渲染。</p>
+<h3 id="22">2.2 重新验证<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
+<p>由于记忆不会在服务器请求之间共享，并且仅在渲染期间应用，因此无需重新验证它。</p>
+<h3 id="23">2.3 选择退出<a class="headerlink" href="#23" title="Permanent link">&para;</a></h3>
+<p>记忆仅适用于获取请求中的 <code>GET</code> 方法，其他方法（例如 <code>POST</code> 和 <code>DELETE</code>）不会被记忆，此默认行为是 React 优化，我们不建议选择退出。</p>
+<p>要管理单个请求，您可以使用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController"><code>AbortController</code></a> 中的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal"><code>signal</code></a> 属性。然而，这不会选择不记忆请求，而是中止正在进行的请求。</p>
+<div class="language-jsx highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">app/example.js</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">signal</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">AbortController</span><span class="p">()</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">signal</span><span class="w"> </span><span class="p">})</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="3">3. 数据缓存<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<p>Next.js 有一个内置的数据缓存，可以在传入的服务器请求和部署中保留数据获取的结果。这是可能的，因为 Next.js 扩展了原生 <code>fetch</code> API，允许服务器上的每个请求设置自己的持久缓存语义。</p>
+<div class="admonition note">
+<p class="admonition-title">补充</p>
+<p>值得注意的是，在浏览器中 <code>fetch</code> 的 <code>cache</code> 选项指示请求如何与浏览器的 HTTP 缓存交互，在 Next.js 中，<code>cache</code> 选项指示服务器端请求如何与服务器的数据缓存交互。</p>
+</div>
+<p>我们可以使用 <code>fetch</code> 的 <a href="https://nextjs.org/docs/app/building-your-application/caching#fetch-optionscache"><code>cache</code></a> 和 <a href="https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnextrevalidate"><code>next.revalidate</code></a> 选项来配置缓存行为。</p>
+<details class="info" open="open">
+<summary>数据缓存的工作原理</summary>
+<p><img alt="" src="../../../images/data-cache.avif" /></p>
+<ul>
+<li>渲染期间第一次调用带有 <code>force-cache</code> 选项的提取请求时，Next.js 会检查数据缓存中是否有缓存的响应。</li>
+<li>如果找到匹配的缓存响应，则会立即返回并保存。</li>
+<li>如果未找到匹配的缓存响应，则会向数据源发出请求，将结果存储在数据缓存中并进行记忆。</li>
+<li>对于未缓存的数据（例如，未定义缓存选项或使用 <code>{cache: 'no-store'}</code>），始终从数据源获取结果并进行记忆。</li>
+<li>无论数据是缓存还是未缓存，请求始终会被记忆，以避免在 React 渲染过程中对相同数据发出重复请求。</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">数据缓存与请求记忆的区别</p>
+<p>虽然这两种缓存机制都有助于通过重用缓存数据来提高性能，但数据缓存在传入请求和部署中是持久的，而记忆仅持续请求的生命周期。</p>
+</div>
+</details>
+<h3 id="31">3.1 周期<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<p>除非您重新验证或选择退出，否则数据缓存在传入请求和部署中保持不变。</p>
+<h3 id="32">3.2 重新验证<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<p>由于记忆不会在服务器请求之间共享，并且仅在渲染期间应用，因此无需重新验证它。</p>
+<ul>
+<li><strong>基于时间的重新验证</strong>：经过一定时间并发出新请求后重新验证数据，这对于不经常更改且即时性不那么重要的数据很有用。</li>
+<li><strong>按需重新验证</strong>：根据事件（例如表单提交）重新验证数据。按需重新验证可以使用基于标签或基于路径的方法立即重新验证数据组，当您想要确保尽快显示最新数据时（例如，当更新无头 CMS 的内容时），这非常有用。</li>
+</ul>
+<h4 id="1_1">1. 基于时间的重新验证<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h4>
+<p>要定期重新验证数据，可以使用 <code>fetch</code> 的 <code>next.revalidate</code> 选项来设置资源的缓存生命周期（以秒为单位）。</p>
+<div class="language-jsx highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
+<span class="normal"><a href="#__codelineno-2-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="c1">// Revalidate at most every hour</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;https://...&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">next</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">revalidate</span><span class="o">:</span><span class="w"> </span><span class="mf">3600</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">})</span>
+</span></code></pre></div></td></tr></table></div>
+<p>或者，我们可以使用路由段配置选项来配置段中的所有 <code>fetch</code> 请求，或者在我们无法使用 <code>fetch</code> 的情况下配置。</p>
+<details class="info" open="open">
+<summary>基于时间的数据验证的工作原理</summary>
+<p><img alt="" src="../../../images/time-based-revalidation.avif" /></p>
+<ul>
+<li>第一次调用带有 <code>revalidate</code> 的获取请求时，将从外部数据源获取数据并将其存储在数据缓存中。</li>
+<li>在指定时间范围（例如 60 秒）内调用的任何请求都将返回缓存的数据。</li>
+<li>在该时间范围之后，下一个请求仍将返回缓存的（现已过时）数据。</li>
+<li>Next.js 将在后台触发数据的重新验证。</li>
+<li>成功获取数据后，Next.js 将使用新数据更新数据缓存。</li>
+<li>如果后台重新验证失败，之前的数据将保持不变。</li>
+</ul>
+</details>
+<p>这类似于 <a href="https://web.dev/stale-while-revalidate">stale-while-revalidate</a> 行为。</p>
+<h4 id="2_1">2. 按需重新验证<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h4>
+<p>数据可以根据路径 (<a href="https://nextjs.org/docs/app/building-your-application/caching#revalidatepath">revalidatePath</a>) 或缓存标记 (<a href="https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag">revalidateTag</a>) 按需重新验证。</p>
+<details class="info" open="open">
+<summary>按需数据验证的工作原理</summary>
+<p><img alt="" src="../../../images/on-demand-revalidation.avif" /></p>
+</details>
+<ul>
+<li>第一次调用获取请求时，将从外部数据源获取数据并将其存储在数据缓存中。</li>
+<li>当触发按需重新验证时，将从缓存中清除相应的缓存记录。<ul>
+<li>这与基于时间的重新验证不同，基于时间的重新验证将陈旧数据保留在缓存中，直到获取新数据。</li>
+</ul>
+</li>
+<li>下次请求时，又是一次缓存 <code>MISS</code>，从外部数据源取数据，存入缓存数据中。</li>
+</ul>
+<h3 id="33">3.3 选择退出<a class="headerlink" href="#33" title="Permanent link">&para;</a></h3>
+<p>如果您不想缓存 <code>fetch</code> 的响应，可以执行以下操作：</p>
+<div class="language-jsx highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">let</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;https://api.vercel.app/blog&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">cache</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;no-store&#39;</span><span class="w"> </span><span class="p">})</span>
+</span></code></pre></div>
+<h2 id="4">4. 全路由缓存<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<div class="admonition note">
+<p class="admonition-title">相关术语</p>
+<p>我们可能会看到术语“自动静态优化”、“静态站点生成”或“静态渲染”可互换使用，指的是应用程序在构建时的渲染和缓存路由的过程。</p>
+</div>
+<p>Next.js 在构建时自动渲染和缓存路由，这是一项优化，允许我们为每个请求提供缓存的路由，而不是在服务器上渲染，从而加快页面加载速度。</p>
+<p>要了解完整路由缓存的工作原理，了解 React 如何处理渲染以及 Next.js 如何缓存结果会很有帮助。</p>
+<h3 id="41-react">4.1 服务端的 React 渲染<a class="headerlink" href="#41-react" title="Permanent link">&para;</a></h3>
+<p>在服务器上，Next.js 使用 React 的 API 来编排渲染。渲染工作被分成多个块：按单独的路由段和延迟边界。每个块都分两步渲染：</p>
+<ol>
+<li>React 将服务器组件呈现为一种特殊的数据格式，针对流进行了优化，称为“React 服务端组件有效负载”。</li>
+<li>Next.js 使用 React 服务端组件有效负载和客户端组件 JavaScript 指令在服务端上呈现 <strong>HTML</strong>。</li>
+</ol>
+<p>这意味着我们不必等待所有内容都渲染完毕才能缓存工作或发送响应。相反，我们可以在工作完成时流式传输响应。</p>
+<details class="info" open="open">
+<summary>什么是 React 服务器组件有效负载？</summary>
+<p>React 服务端组件有效负载是渲染的 React 服务端组件树的紧凑二进制表示。客户端上的 React 使用它来更新浏览器的 DOM。 React 服务器组件有效负载包含：</p>
+<ul>
+<li>服务端组件的渲染结果</li>
+<li>客户端组件应呈现的位置的占位符以及对其 JavaScript 文件的引用</li>
+<li>从服务器组件传递到客户端组件的任何道具</li>
+</ul>
+<p>要了解更多信息，请参阅服务器组件文档。</p>
+</details>
+<h3 id="42-nextjs">4.2 服务端的 Next.js 缓存（全路由缓存）<a class="headerlink" href="#42-nextjs" title="Permanent link">&para;</a></h3>
+<p>Next.js 的默认行为是在服务器上缓存路由的渲染结果（React 服务端组件负载和 HTML），这适用于构建时或重新验证期间静态渲染的路由。</p>
+<h3 id="43-react">4.3 客户端的 React 注水和协调<a class="headerlink" href="#43-react" title="Permanent link">&para;</a></h3>
+<p>在请求时，在客户端上：</p>
+<ol>
+<li>HTML 用于立即显示客户端和服务器组件的快速非交互式初始预览。</li>
+<li>React 服务端组件有效负载用于协调客户端和渲染的服务端组件树，并更新 DOM。</li>
+<li>JavaScript 指令用于补充客户端组件并使应用程序具有交互性。</li>
+</ol>
+<h3 id="44-nextjs">4.4 客户端的 Next.js 缓存（路由缓存）<a class="headerlink" href="#44-nextjs" title="Permanent link">&para;</a></h3>
+<p>React 服务端组件有效负载存储在客户端路由器缓存中（一个单独的内存缓存，由各个路由段分割），该路由器缓存用于通过存储以前访问过的路由并预取未来的路线来改善导航体验。</p>
+<h3 id="45">4.5 后续导航<a class="headerlink" href="#45" title="Permanent link">&para;</a></h3>
+<p>在后续导航或预取期间，Next.js 将检查 React 服务端组件有效负载是否存储在路由器缓存中。如果是这样，它将跳过向服务端发送新请求。</p>
+<p>如果路由段不在缓存中，Next.js 将从服务器获取 React 服务端组件有效负载，并填充客户端上的路由器缓存。</p>
+<h3 id="46">4.6 静态和动态渲染<a class="headerlink" href="#46" title="Permanent link">&para;</a></h3>
+<p>路由在构建时是否被缓存取决于它是静态渲染还是动态渲染。默认情况下会缓存静态路由，而动态路由会在请求时呈现，并且不会被缓存。下图显示了静态和动态渲染的路由之间的差异，以及缓存和未缓存的数据：</p>
+<p><img alt="" src="../../../images/static-and-dynamic-routes.avif" /></p>
+<h3 id="47">4.7 期间<a class="headerlink" href="#47" title="Permanent link">&para;</a></h3>
+<p>默认情况下，完整路由缓存是持久的。这意味着渲染输出会跨用户请求进行缓存。</p>
+<h3 id="48">4.8 失效<a class="headerlink" href="#48" title="Permanent link">&para;</a></h3>
+<p>有两种方法可以使完整路由缓存失效：</p>
+<ul>
+<li>重新验证数据:</li>
+<li>重新部署：与跨部署持续存在的数据缓存不同，完整路由缓存在新部署中会被清除。</li>
+</ul>
+<h3 id="49">4.9 选择退出<a class="headerlink" href="#49" title="Permanent link">&para;</a></h3>
+<p>我们可以选择退出完整路由缓存，或者换句话说，为每个传入请求动态渲染组件，方法是：</p>
+<ul>
+<li><strong>使用动态API</strong>：这将从完整路由缓存中选择路由并在请求时动态呈现它。数据缓存仍然可以使用。</li>
+<li><strong>使用 <code>dynamic='force-dynamic'</code> 或 <code>revalidate=0</code> 路由段配置选项</strong>：这将跳过完整路由缓存和数据缓存，意味着将在每次传入服务器的请求时呈现组件并获取数据。路由器缓存仍然适用，因为它是客户端缓存。</li>
+<li><strong>选择退出数据缓存</strong>：如果路由有未缓存的 <code>fetch</code> 请求，则会选择该路由退出完整路由缓存。将为每个传入请求获取特定获取请求的数据。其他未选择退出缓存的 <code>fetch</code> 请求仍将缓存在数据缓存中。这允许缓存和未缓存数据的混合。</li>
+</ul>
+<h2 id="5">5. 客户端路由缓存<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<p>Next.js 有一个内存客户端路由器缓存，用于存储路由段的 RSC 有效负载，按布局、加载状态和页面划分。</p>
+<p>当用户在路由之间导航时，Next.js 会缓存访问过的路线段并预取用户可能导航到的路线。这会导致即时后退/前进导航，导航之间无需重新加载整页，并保留 React 状态和浏览器状态。</p>
+<p>使用路由器缓存：</p>
+<ul>
+<li>布局被缓存并在导航上重用（部分渲染）。</li>
+<li>加载状态被缓存并在导航上重用以实现即时导航。</li>
+<li>默认情况下，页面不会被缓存，但会在浏览器向后和向前导航期间重复使用。您可以使用实验性 <a href="https://nextjs.org/docs/app/api-reference/next-config-js/staleTimes"><code>staleTimes</code></a> 配置选项启用页面段缓存。</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">补充</p>
+<p>值得注意的是：此缓存专门适用于 Next.js 和服务端组件，与浏览器的 <a href="https://web.dev/bfcache"><code>bfcache</code></a> 不同，尽管它具有类似的结果。</p>
+</div>
+<h3 id="51">5.1 期间<a class="headerlink" href="#51" title="Permanent link">&para;</a></h3>
+<p>缓存存储在浏览器的临时内存中，有两个因素决定路由器缓存的持续时间：</p>
+<ul>
+<li>会话：缓存在整个导航过程中持续存在，但是它会在页面刷新时被清除。</li>
+<li>自动失效期：布局和加载状态的缓存在特定时间后自动失效，持续时间取决于资源的预取方式以及资源是否静态生成：</li>
+<li>默认预取（<code>prefetch={null}</code> 或未指定）：动态页面不缓存，静态页面 5 分钟。</li>
+<li>完全预取（<code>prefetch={true}</code> 或 <code>router.prefetch</code>）：静态页面和动态页面均为 5 分钟。</li>
+</ul>
+<p>虽然页面刷新将清除所有缓存的路由段，但自动失效期仅影响预取后的各个段。</p>
+<div class="admonition note">
+<p class="admonition-title">补充</p>
+<p>实验性 <a href="https://nextjs.org/docs/app/api-reference/next-config-js/staleTimes"><code>staleTimes</code></a> 配置选项可用于调整上述自动失效时间。</p>
+</div>
+<h3 id="52">5.2 失效<a class="headerlink" href="#52" title="Permanent link">&para;</a></h3>
+<p>有两种方法可以使路由器缓存失效：</p>
+<ul>
+<li>服务端动作：</li>
+<li>通过 (<a href="https://nextjs.org/docs/app/api-reference/functions/revalidatePath"><code>revalidatePath</code></a>) 路径或通过 (<a href="https://nextjs.org/docs/app/api-reference/functions/revalidateTag"><code>revalidateTag</code></a>) 缓存标记按需重新验证数据。</li>
+<li>使用 <a href="https://nextjs.org/docs/app/api-reference/functions/cookies#setting-a-cookie"><code>cookies.set</code></a> 或 <a href="https://nextjs.org/docs/app/api-reference/functions/cookies#deleting-cookies"><code>cookies.delete</code></a> 会使路由器缓存失效，以防止使用 cookie 的路由变得过时（例如身份验证）。</li>
+<li>调用 <code>router.refresh</code> 将使路由缓存失效，并向服务端发出当前路由的新请求。</li>
+</ul>
+<h3 id="53">5.3 选择退出<a class="headerlink" href="#53" title="Permanent link">&para;</a></h3>
+<p>从 Next.js 15 开始，默认情况下会选择退出页面段。</p>
+<div class="admonition note">
+<p class="admonition-title">补充</p>
+<p>您还可以通过将 <code>&lt;Link&gt;</code> 组件的 <code>prefetch</code> 属性设置为 <code>false</code> 来选择退出预取。</p>
+</div>
+<h2 id="6">6. 缓存交互<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<p>配置不同的缓存机制时，了解它们如何相互作用非常重要：</p>
+<h3 id="61">6.1 数据缓存和全路由缓存<a class="headerlink" href="#61" title="Permanent link">&para;</a></h3>
+<ul>
+<li>重新验证或选择退出数据缓存将使完整路由缓存无效，因为渲染输出取决于数据。</li>
+<li>使完整路由缓存失效或选择退出不会影响数据缓存。我们可以动态渲染具有缓存和未缓存数据的路由。当我们的大部分页面使用缓存数据，但依然有一些组件依赖于需要在请求时获取的数据时，这非常有用。您可以动态渲染，而不必担心重新获取所有数据对性能的影响。</li>
+</ul>
+<h3 id="62">6.2 数据缓存和客户端路由器缓存<a class="headerlink" href="#62" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>要立即使数据缓存和路由器缓存失效，我们可以在<a href="https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations">服务端操作</a>中使用 <a href="https://nextjs.org/docs/app/building-your-application/caching#revalidatepath"><code>revalidatePath</code></a> 或 <a href="https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag"><code>revalidateTag</code></a>。</p>
+</li>
+<li>
+<p>重新验证路由处理程序中的数据缓存不会立即使路由器缓存失效，因为路由处理程序未绑定到特定路由。这意味着路由器缓存将继续提供先前的有效负载，直到硬刷新或自动失效期结束。 </p>
+</li>
+</ul>
+<h2 id="7-api">7. API<a class="headerlink" href="#7-api" title="Permanent link">&para;</a></h2>
+<p>下表概述了不同的 Next.js API 如何影响缓存：</p>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>路由器缓存</th>
+<th>全路由缓存</th>
+<th>数据缓存</th>
+<th>React缓存</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;Link prefetch&gt;</code></td>
+<td>缓存</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>router.prefetch</code></td>
+<td>缓存</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>router.refresh</code></td>
+<td>重新验证</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>fetch</code></td>
+<td></td>
+<td></td>
+<td>缓存</td>
+<td></td>
+</tr>
+<tr>
+<td><code>fetch options.cache</code></td>
+<td></td>
+<td></td>
+<td>缓存或选择退出</td>
+<td></td>
+</tr>
+<tr>
+<td><code>fetch options.next.revalidate</code></td>
+<td></td>
+<td>重新验证</td>
+<td>重新验证</td>
+<td></td>
+</tr>
+<tr>
+<td><code>fetch options.next.tags</code></td>
+<td></td>
+<td>缓存</td>
+<td>缓存</td>
+<td></td>
+</tr>
+<tr>
+<td><code>revalidateTag</code></td>
+<td>重新验证（服务端操作）</td>
+<td>重新验证</td>
+<td>重新验证</td>
+<td></td>
+</tr>
+<tr>
+<td><code>revalidatePath</code></td>
+<td>重新验证（服务端操作）</td>
+<td>重新验证</td>
+<td>重新验证</td>
+<td></td>
+</tr>
+<tr>
+<td><code>const revalidate</code></td>
+<td></td>
+<td>重新验证或选择退出</td>
+<td>重新验证或选择退出</td>
+<td></td>
+</tr>
+<tr>
+<td><code>const dynamic</code></td>
+<td></td>
+<td>缓存或选择退出</td>
+<td>缓存或选择退出</td>
+<td></td>
+</tr>
+<tr>
+<td><code>cookies</code></td>
+<td>重新验证（服务端操作）</td>
+<td>选择退出</td>
+<td>缓存或选择退出</td>
+<td></td>
+</tr>
+<tr>
+<td><code>headers</code>、<code>searchParams</code></td>
+<td></td>
+<td>选择退出</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>generateStaticParams</code></td>
+<td></td>
+<td>选择退出</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>React.cache</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>缓存</td>
+</tr>
+<tr>
+<td><code>unstable_cache</code></td>
+<td></td>
+<td></td>
+<td>缓存</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="71-link">7.1 <code>&lt;Link&gt;</code><a class="headerlink" href="#71-link" title="Permanent link">&para;</a></h3>
+<p>默认情况下，<code>&lt;Link&gt;</code> 组件会自动从完整路由缓存中预取路由，并将 React 服务端组件有效负载添加到路由器缓存中。</p>
+<p>要禁用预取，您可以将 <code>prefetch</code> 属性设置为 <code>false</code>。但这不会永久跳过缓存，当用户访问该路由时，该路由段仍会缓存在客户端。</p>
+<h3 id="72-routerprefetch">7.2 <code>router.prefetch</code><a class="headerlink" href="#72-routerprefetch" title="Permanent link">&para;</a></h3>
+<p><code>useRouter</code> 钩子的 <code>prefetch</code> 选项可用于手动预取路由，这会将 React 服务端组件有效负载添加到路由器缓存中。</p>
+<h3 id="73-routerrefresh">7.3 <code>router.refresh</code><a class="headerlink" href="#73-routerrefresh" title="Permanent link">&para;</a></h3>
+<p><code>useRouter</code> 钩子的 <code>refresh</code> 选项可用于手动刷新路由，这将完全清除路由器缓存，并向服务器发出当前路由的新请求，<code>refresh</code> 不会影响数据或完整路由缓存。</p>
+<p>渲染的结果将在客户端上进行协调，同时保留 React 状态和浏览器状态。</p>
+<h3 id="74-fetch">7.4 <code>fetch</code><a class="headerlink" href="#74-fetch" title="Permanent link">&para;</a></h3>
+<p>从 <code>fetch</code> 返回的数据会自动缓存在数据缓存中，如果您不想缓存 <code>fetch</code> 的响应，可以执行以下操作：</p>
+<div class="language-jsx highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="kd">let</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;https://api.vercel.app/blog&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">cache</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;no-store&#39;</span><span class="w"> </span><span class="p">})</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="75-fetchcache">7.5 <code>fetch</code>的<code>cache</code> 参数<a class="headerlink" href="#75-fetchcache" title="Permanent link">&para;</a></h3>
+<p>我们可以通过将 <code>cache</code> 选项设置为 <code>force-cache</code> 来选择将单独的 <code>fetch</code> 放入缓存：</p>
+<div class="language-jsx highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
+<span class="normal"><a href="#__codelineno-5-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="c1">// Opt into caching</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="nx">fetch</span><span class="p">(</span><span class="sb">`https://...`</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">cache</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;force-cache&#39;</span><span class="w"> </span><span class="p">})</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="76-fetch-nextreavalidate">7.6 <code>fetch</code> 的 <code>next.reavalidate</code> 参数<a class="headerlink" href="#76-fetch-nextreavalidate" title="Permanent link">&para;</a></h3>
+<p>我们可以使用 <code>fetch</code> 的 <code>next.revalidate</code> 选项来设置单个 <code>fetch</code> 请求的重新验证周期（以秒为单位）。这将重新验证数据缓存，进而重新验证完整路由缓存。获取到的新数据，并且组件将在服务器上重新渲染。</p>
+<div class="language-jsx highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
+<span class="normal"><a href="#__codelineno-6-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="c1">// Revalidate at most after 1 hour</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="nx">fetch</span><span class="p">(</span><span class="sb">`https://...`</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">next</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">revalidate</span><span class="o">:</span><span class="w"> </span><span class="mf">3600</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">})</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="77-fetch-nexttags-revalidatetag">7.7 <code>fetch</code> 的 <code>next.tags</code> 参数以及 <code>revalidateTag</code><a class="headerlink" href="#77-fetch-nexttags-revalidatetag" title="Permanent link">&para;</a></h3>
+<p>Next.js 有一个缓存标记系统，用于细粒度数据缓存和重新验证。</p>
+<ol>
+<li>使用 <code>fetch</code> 或 <code>unstable_cache</code> 时，您可以选择使用一个或多个标签来标记缓存条目。</li>
+<li>然后，您可以调用 <code>revalidateTag</code> 来清除与该标记关联的缓存条目。</li>
+</ol>
+<p>例如，我们可以在获取数据时设置标签：</p>
+<div class="language-jsx highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
+<span class="normal"><a href="#__codelineno-7-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="c1">// Cache data with a tag</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="nx">fetch</span><span class="p">(</span><span class="sb">`https://...`</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">next</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;c&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">})</span>
+</span></code></pre></div></td></tr></table></div>
+<p>然后，使用标签调用 <code>revalidateTag</code> 来清除缓存条目：</p>
+<div class="language-jsx highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
+<span class="normal"><a href="#__codelineno-8-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="c1">// Revalidate entries with a specific tag</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="nx">revalidateTag</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+<p>我们可以在两个地方使用 <code>revalidateTag</code>，具体取决于想要实现的目标：</p>
+<ol>
+<li><strong>路由处理器</strong>：重新验证数据以响应第三方事件（例如 webhook），这不会立即使路由器缓存失效，因为路由器处理程序未绑定到特定路由。</li>
+<li><strong>服务端操作</strong>：在用户操作（例如表单提交）后重新验证数据，这将使关联路由的路由器缓存失效。</li>
+</ol>
+<h3 id="78-revalidatepath">7.8 <code>revalidatePath</code><a class="headerlink" href="#78-revalidatepath" title="Permanent link">&para;</a></h3>
+<p><code>revalidatePath</code> 允许您在单个操作中手动重新验证数据并重新渲染特定路径下方的路由段，调用 <code>revalidatePath</code> 方法会重新验证数据缓存，从而使完整路由缓存失效。</p>
+<div class="language-jsx highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nx">revalidatePath</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>您可以在两个地方使用 <code>revalidatePath</code>，具体取决于您想要实现的目标：</p>
+<ol>
+<li><strong>路由处理器</strong>：重新验证数据以响应第三方事件（例如 webhook）。</li>
+<li><strong>服务端操作</strong>：在用户交互（例如表单提交、按钮点击）后重新验证数据。</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">revalidatePath VS. router.refresh</p>
+<p>调用 <code>router.refresh</code> 将清除路由器缓存，并在服务端重新渲染路由段，而不会使数据缓存或完整路由缓存失效。</p>
+<p>不同之处在于，<code>revalidatePath</code> 会清除数据缓存和完整路由缓存，而 <code>router.refresh()</code> 不会更改数据缓存和完整路由缓存，因为它是客户端 API。</p>
+</div>
+<h3 id="79-api">7.9 动态API<a class="headerlink" href="#79-api" title="Permanent link">&para;</a></h3>
+<p>动态API（如 <code>cookie</code> 和 <code>headers</code>）以及 Pages 中的 <code>searchParams</code> 属性取决于运行时传入的请求信息，使用它们将从完整路由缓存中选择一条路由，换句话说，该路由将被动态渲染。</p>
+<h4 id="791-cookies">7.9.1 <code>cookies</code><a class="headerlink" href="#791-cookies" title="Permanent link">&para;</a></h4>
+<p>在服务端操作中使用 <code>cookies.set</code> 或 <code>cookies.delete</code> 会使路由器缓存失效，以防止使用 <code>cookie</code> 的路由变得过时（例如，反映身份验证更改）。</p>
+<h3 id="710">7.10 路由段配选项<a class="headerlink" href="#710" title="Permanent link">&para;</a></h3>
+<p>路由段配置选项可用于覆盖路线段默认值，或者当您无法使用获取 API（例如数据库客户端或第三方库）时。</p>
+<h3 id="711-generatestaticparams">7.11 generateStaticParams<a class="headerlink" href="#711-generatestaticparams" title="Permanent link">&para;</a></h3>
+<p>对于<a href="https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes">动态段</a>（例如 <code>app/blog/[slug]/page.js</code>），<code>generateStaticParams</code> 提供的路径会在构建时缓存在完整路由缓存中。在请求时，Next.js 还将在构建时第一次访问的未知路径进行缓存。</p>
+<p>要在构建时静态渲染所有路径，请向 <code>generateStaticParams</code> 提供完整的路径列表：</p>
+<div class="language-js highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">app/blog/[slug]/page.js</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
+<span class="normal"><a href="#__codelineno-10-2">2</a></span>
+<span class="normal"><a href="#__codelineno-10-3">3</a></span>
+<span class="normal"><a href="#__codelineno-10-4">4</a></span>
+<span class="normal"><a href="#__codelineno-10-5">5</a></span>
+<span class="normal"><a href="#__codelineno-10-6">6</a></span>
+<span class="normal"><a href="#__codelineno-10-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="k">export</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">generateStaticParams</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">posts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;https://.../posts&#39;</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">posts</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">post</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">({</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5"></a><span class="w">    </span><span class="nx">slug</span><span class="o">:</span><span class="w"> </span><span class="nx">post</span><span class="p">.</span><span class="nx">slug</span><span class="p">,</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="w">  </span><span class="p">}))</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="712-react-cache">7.12 React <code>cache</code> 函数<a class="headerlink" href="#712-react-cache" title="Permanent link">&para;</a></h3>
+<p>React <code>cache</code> 函数允许我们记住函数的返回值，也允许多次调用同一个函数，而只执行一次。由于 <code>fetch</code> 请求会自动记忆，因此不需要将其包装在 React <code>cache</code>。但是，当 <code>fetch</code> API 不适用时，我们可以使用 <code>cache</code> 手动记录用例的数据请求。例如，某些数据库客户端、CMS 客户端或 GraphQL 客户端。</p>
+<div class="language-ts highlight"><span class="filename">utils/get-item.ts</span><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">cache</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;react&#39;</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">import</span><span class="w"> </span><span class="nx">db</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@/lib/db&#39;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">getItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">cache</span><span class="p">(</span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">item</span><span class="p">.</span><span class="nx">findUnique</span><span class="p">({</span><span class="w"> </span><span class="nx">id</span><span class="w"> </span><span class="p">})</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">item</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="p">})</span>
+</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../rendering/runtimes/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 运行时">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                运行时
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../styling/" class="md-footer__link md-footer__link--next" aria-label="下一页: Index">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                Index
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024, Mingmin Yu
+    </div>
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://cn.vuejs.org/guide/introduction.html" target="_blank" rel="noopener" title="cn.vuejs.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h320c17.7 0 32-14.3 32-32s-14.3-32-32-32v-64c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96m0 384h256v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32m32-240c0-8.8 7.2-16 16-16h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16m16 48h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["announce.dismiss", "content.code.annotate", "content.code.copy", "content.code.select", "content.tooltips", "content.tabs.link", "content.footnote.tooltips", "navigation.instant", "navigation.instant.progress", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.indexes", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../../assets/javascripts/toggle-sidebar.js" async></script>
+      
+    
+  </body>
+</html>
