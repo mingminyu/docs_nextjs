@@ -427,9 +427,36 @@ revalidatePath('/')
 
 路由段配置选项可用于覆盖路线段默认值，或者当您无法使用获取 API（例如数据库客户端或第三方库）时。
 
-### 7.11 生成静态参数
+### 7.11 generateStaticParams
+
+对于[动态段](https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes)（例如 `app/blog/[slug]/page.js`），`generateStaticParams` 提供的路径会在构建时缓存在完整路由缓存中。在请求时，Next.js 还将在构建时第一次访问的未知路径进行缓存。
+
+要在构建时静态渲染所有路径，请向 `generateStaticParams` 提供完整的路径列表：
+
+```js linenums="1" title="app/blog/[slug]/page.js"
+export async function generateStaticParams() {
+  const posts = await fetch('https://.../posts').then((res) => res.json())
+ 
+  return posts.map((post) => ({
+    slug: post.slug,
+  }))
+}
+```
+
 
 ### 7.12 React `cache` 函数
+
+React `cache` 函数允许我们记住函数的返回值，也允许多次调用同一个函数，而只执行一次。由于 `fetch` 请求会自动记忆，因此不需要将其包装在 React `cache`。但是，当 `fetch` API 不适用时，我们可以使用 `cache` 手动记录用例的数据请求。例如，某些数据库客户端、CMS 客户端或 GraphQL 客户端。
+
+```ts title="utils/get-item.ts"
+import { cache } from 'react'
+import db from '@/lib/db'
+ 
+export const getItem = cache(async (id: string) => {
+  const item = await db.item.findUnique({ id })
+  return item
+})
+```
 
 
 
